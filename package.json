@@ -1,0 +1,49 @@
+{
+  "name": "chat-frontend",
+  "author": "Sujith Kumar Thankaraj",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
+    "@tailwindcss/vite": "^4.0.9",
+    "@tanstack/react-query": "^5.72.2",
+    "@types/auth0": "^3.3.10",
+    "@types/js-cookie": "^3.0.6",
+    "@types/react-modal": "^3.16.3",
+    "@types/styled-components": "^5.1.34",
+    "formik": "^2.4.6",
+    "i": "^0.3.7",
+    "js-cookie": "^3.0.5",
+    "npm": "^11.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-loading-skeleton": "^3.5.0",
+    "react-modal": "^3.16.3",
+    "react-router": "^7.2.0",
+    "react-toastify": "^11.0.5",
+    "react-tooltip": "^5.28.1",
+    "socket.io-client": "^4.8.1",
+    "styled-components": "^6.1.15",
+    "tailwindcss": "^4.0.9"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.0"
+  }
+}
