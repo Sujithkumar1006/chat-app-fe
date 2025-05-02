@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchWrapper } from "./utils/fetchUtils";
 import { formatChatTimestamp } from "./utils/loginUtils";
 import { Socket } from "socket.io-client";
+import { useQueryClient } from "@tanstack/react-query";
 
 type MessageList = {
   lastMessage: string;
@@ -43,26 +44,52 @@ const MessageList = ({
 }) => {
   const { user } = useAuth0();
   const [openUsers, setOpenUsers] = useState(false);
+  const [defaultChatSet, setDefaultChatSet] = useState(false);
+
+  const queryClient = useQueryClient();
   const { isPending, error, data } = useQuery({
     queryKey: ["chats"],
     queryFn: () =>
       fetchWrapper("http://localhost:3001/api/messages/all-chats").then((res) =>
         res.json()
       ),
+
     staleTime: 1000 * 60 * 10,
   });
 
   useEffect(() => {
-    if (data?.users?.[0]) {
-      handleClickMessage(data?.users?.[0]?.auth0_id, data?.users?.[0]?.name);
+    if (!defaultChatSet && data?.users?.length > 0) {
+      handleClickMessage(data.users[0].auth0_id, data.users[0].name);
+      setDefaultChatSet(true);
     }
-  }, [data]);
+  }, [data, defaultChatSet]);
 
   const onSlide = (e: any) => {};
 
   const onChatClick = (message: MessageList) => {
     handleClickMessage(message?.auth0_id, message.name);
   };
+
+  const handleAddMessage = (newMsg: any) => {
+    const newMessageObj = {
+      lastMessage: "",
+      isRead: false,
+      auth0_id: newMsg?.userId,
+      name: newMsg?.name,
+      email: newMsg?.email,
+      picture: newMsg?.profilePicture,
+      timestamp: new Date().toString(),
+    };
+    queryClient.setQueryData(["chats"], (oldData: any) => {
+      return {
+        ...oldData,
+        users: [...(oldData?.users || []), newMessageObj],
+      };
+    });
+    setOpenUsers((prevState) => !prevState);
+    onChatClick(newMessageObj);
+  };
+
   return (
     <Container className="col-span-3">
       <div className="flex items-center p-2 justify-between top-menu">
@@ -119,7 +146,7 @@ const MessageList = ({
           >
             X
           </button>
-          <UserList onlineUsers={onlineUsers} />
+          <UserList onlineUsers={onlineUsers} onUserClick={handleAddMessage} />
         </ModalContainer>
       </Modal>
     </Container>

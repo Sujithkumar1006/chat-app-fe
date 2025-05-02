@@ -4,7 +4,13 @@ import Skeleton from "react-loading-skeleton";
 import { fetchWrapper } from "./utils/fetchUtils";
 import { Tooltip } from "react-tooltip";
 
-const UserList = ({ onlineUsers }: { onlineUsers: string[] }) => {
+const UserList = ({
+  onlineUsers,
+  onUserClick,
+}: {
+  onlineUsers: string[];
+  onUserClick: (e: any) => void;
+}) => {
   const { isPending, data } = useQuery({
     queryKey: ["allUsers"],
     queryFn: () =>
@@ -24,8 +30,12 @@ const UserList = ({ onlineUsers }: { onlineUsers: string[] }) => {
     <ul className="user-list">
       {data?.users?.map((e: any) => {
         return (
-          <li key={e.userId}>
-            <img src={e?.profilePicture ?? profilePic} alt="Default Pic" />
+          <li key={e.userId} onClick={() => onUserClick(e)}>
+            <img
+              src={e?.profilePicture ?? profilePic}
+              alt="Default Pic"
+              referrerPolicy="no-referrer"
+            />
             <p>{e.name}</p>
             <span
               className={`round-status ${

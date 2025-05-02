@@ -84,6 +84,7 @@ export const ChatBoxContiner = styled.div`
     padding: 8px;
     position: sticky;
     display: flex;
+    z-index:9;
     top: 0;
     background: white;
     align-items: center;
@@ -116,6 +117,7 @@ export const ChatBoxContiner = styled.div`
           display: flex;
           align-items: center;
           font-weight: bold;
+          margin-bottom: 20px;
           > img {
             height: 24px;
             width: 24px;
@@ -145,6 +147,14 @@ export const ChatBoxContiner = styled.div`
     display: flex;
     align-items: center;
     gap: 20px;
+    .chat-image {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+    }
   }
   .message-bubble {
     max-width: 70%;

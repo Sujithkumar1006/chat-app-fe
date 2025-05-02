@@ -7,7 +7,6 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "react-loading-skeleton/dist/skeleton.css";
 
-console.log(process.env.AUTH0_AUDIENCE);
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(

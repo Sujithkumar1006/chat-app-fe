@@ -11,6 +11,7 @@ function Home() {
   const { getAccessTokenSilently, user } = useAuth0();
   const [currentSender, setCurrentSender] = useState({ id: "", name: "" });
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
+  const [tokenReady, setTokenReady] = useState(false);
 
   const socketRef = useSocket(user?.sub);
 
@@ -18,6 +19,7 @@ function Home() {
     getAccessTokenSilently()
       .then(async (response) => {
         Cookies.set("access_token", response);
+        setTokenReady(true);
       })
       .catch((_) => {
         toast("Error in setting cookies !");
@@ -35,28 +37,32 @@ function Home() {
   }, [socketRef]);
 
   useEffect(() => {
-    if (user?.name)
+    if (user?.name && tokenReady)
       syncAuth0ToServer(user).catch((err) => {
         toast.error(err);
       });
-  }, [user]);
+  }, [user, tokenReady]);
 
   const handleChangeChatScreen = (userId: string, name: string) => {
     setCurrentSender({ id: userId, name });
   };
   return (
     <div className="grid grid-cols-10">
-      <MessageList
-        handleClickMessage={handleChangeChatScreen}
-        socket={socketRef}
-        onlineUsers={onlineUsers}
-      />
-      {currentSender?.id && (
-        <ChatBox
-          currentSender={currentSender}
-          socket={socketRef}
-          isUserOnline={onlineUsers.includes(currentSender?.id)}
-        />
+      {tokenReady && (
+        <>
+          <MessageList
+            handleClickMessage={handleChangeChatScreen}
+            socket={socketRef}
+            onlineUsers={onlineUsers}
+          />
+          {currentSender?.id && (
+            <ChatBox
+              currentSender={currentSender}
+              socket={socketRef}
+              isUserOnline={onlineUsers.includes(currentSender?.id)}
+            />
+          )}
+        </>
       )}
     </div>
   );
